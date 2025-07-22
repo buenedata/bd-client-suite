@@ -6,14 +6,14 @@
  * the WordPress admin experience for a polished, client-friendly environment.
  *
  * @package BD_Client_Suite
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /*
 Plugin Name: BD Client Suite
 Plugin URI: https://buenedata.no/bd-client-suite/
 Description: Professional WordPress branding and customization plugin that transforms the admin experience. Create custom login pages, admin shortcuts, smart redirections, and client-friendly interfaces.
-Version: 1.0.0
+Version: 1.0.1
 Author: Buene Data
 Author URI: https://buenedata.no/
 Text Domain: bd-client-suite
@@ -32,7 +32,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('BD_CLIENT_SUITE_VERSION', '1.0.0');
+define('BD_CLIENT_SUITE_VERSION', '1.0.1');
 define('BD_CLIENT_SUITE_FILE', __FILE__);
 define('BD_CLIENT_SUITE_PATH', plugin_dir_path(__FILE__));
 define('BD_CLIENT_SUITE_URL', plugin_dir_url(__FILE__));
