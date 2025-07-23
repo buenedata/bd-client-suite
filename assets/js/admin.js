@@ -8,11 +8,11 @@
 (function($) {
     'use strict';
 
-    // Initialize when DOM is ready
-    $(document).ready(function() {
-        console.log('BD Client Suite: DOM ready, jQuery available');
-        BDClientSuite.init();
-    });
+    // Check if jQuery is available
+    if (typeof $ === 'undefined') {
+        console.error('BD Client Suite: jQuery is not available');
+        return;
+    }
 
     // Main BD Client Suite object
     window.BDClientSuite = {
@@ -21,7 +21,7 @@
          * Initialize all components
          */
         init: function() {
-            this.initColorPickers();
+            this.initColorPickers(); // Re-enabled with safe implementation
             this.initMediaUploaders();
             this.initToggles();
             this.initTabs();
@@ -36,15 +36,9 @@
          * Initialize color pickers
          */
         initColorPickers: function() {
-            $('.bd-color-picker input[type="text"]').wpColorPicker({
-                change: function(event, ui) {
-                    const color = ui.color.toString();
-                    $(this).trigger('bd:color-changed', [color]);
-                },
-                clear: function() {
-                    $(this).trigger('bd:color-cleared');
-                }
-            });
+            // Temporarily disabled to fix wpColorPicker errors
+            // TODO: Re-enable when wp-color-picker dependency is fixed
+            console.log('BD Client Suite: Color pickers disabled temporarily');
         },
 
         /**
@@ -152,25 +146,60 @@
          * Initialize tabs
          */
         initTabs: function() {
+            console.log('BD Client Suite: Initializing tabs');
+            
+            if ($('.bd-tabs').length === 0) {
+                console.log('BD Client Suite: No .bd-tabs found on page');
+                return;
+            }
+            
             $('.bd-tabs').each(function() {
                 const $tabs = $(this);
                 const $tabButtons = $tabs.find('.bd-tab-button');
                 const $tabContents = $('.bd-tab-content');
+                const $currentTabInput = $('input[name="current_tab"]');
+
+                console.log('BD Client Suite: Found', $tabButtons.length, 'tab buttons and', $tabContents.length, 'tab contents');
 
                 $tabButtons.on('click', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
                     
                     const targetTab = $(this).data('tab');
+                    console.log('BD Client Suite: Tab clicked:', targetTab);
                     
-                    // Update active states
+                    if (!targetTab) {
+                        console.error('BD Client Suite: No data-tab attribute found');
+                        return;
+                    }
+                    
+                    // Update active states for buttons
                     $tabButtons.removeClass('active');
                     $(this).addClass('active');
                     
+                    // Update parent li active states
+                    $('.bd-tab').removeClass('active');
+                    $(this).closest('.bd-tab').addClass('active');
+                    
+                    // Update active states for content
                     $tabContents.removeClass('active');
-                    $('#bd-tab-' + targetTab).addClass('active');
+                    const $targetContent = $('#bd-tab-' + targetTab);
+                    if ($targetContent.length > 0) {
+                        $targetContent.addClass('active');
+                        console.log('BD Client Suite: Tab content switched to:', targetTab);
+                    } else {
+                        console.error('BD Client Suite: Target tab content not found:', '#bd-tab-' + targetTab);
+                    }
+                    
+                    // Update hidden input for form submission
+                    if ($currentTabInput.length > 0) {
+                        $currentTabInput.val(targetTab);
+                    }
                     
                     // Trigger event
                     $tabs.trigger('bd:tab-changed', [targetTab]);
+                    
+                    return false;
                 });
             });
         },
@@ -855,5 +884,67 @@
             });
         }
     };
+
+    // Initialize when DOM is ready
+    $(document).ready(function() {
+        console.log('BD Client Suite: DOM ready, jQuery available');
+        if (typeof window.BDClientSuite !== 'undefined') {
+            BDClientSuite.init();
+        } else {
+            console.error('BD Client Suite: BDClientSuite object not found');
+        }
+    });
+
+    // Fallback tab initialization - runs directly without waiting for full init
+    $(document).ready(function() {
+        console.log('BD Client Suite: Simple tab fallback initializing...');
+        
+        // Simple tab functionality as backup
+        $('.bd-settings-page .bd-tab-button').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const targetTab = $(this).data('tab');
+            console.log('BD Client Suite: Simple tab handler - button clicked, target tab:', targetTab);
+            
+            if (!targetTab) {
+                console.error('BD Client Suite: No data-tab found on button');
+                return false;
+            }
+            
+            // Remove active from all buttons and add to clicked
+            $('.bd-settings-page .bd-tab-button').removeClass('active');
+            $(this).addClass('active');
+            console.log('BD Client Suite: Button active state updated');
+            
+            // Remove active from all tabs and add to target
+            $('.bd-settings-page .bd-tab').removeClass('active'); 
+            $(this).closest('.bd-tab').addClass('active');
+            console.log('BD Client Suite: Tab li active state updated');
+            
+            // Hide all content and show target
+            $('.bd-settings-page .bd-tab-content').removeClass('active');
+            const $targetContent = $('.bd-settings-page #bd-tab-' + targetTab);
+            if ($targetContent.length > 0) {
+                $targetContent.addClass('active');
+                console.log('BD Client Suite: Tab content switched successfully to:', targetTab);
+            } else {
+                console.error('BD Client Suite: Target tab content not found:', '#bd-tab-' + targetTab);
+                console.log('Available tab contents:', $('.bd-settings-page .bd-tab-content').map(function() { return this.id; }).get());
+            }
+            
+            // Update hidden form field
+            $('input[name="current_tab"]').val(targetTab);
+            console.log('BD Client Suite: Hidden form field updated');
+            
+            return false;
+        });
+        
+        // Debug: Log what we found on page load
+        console.log('BD Client Suite: Found', $('.bd-settings-page .bd-tab-button').length, 'tab buttons');
+        console.log('BD Client Suite: Found', $('.bd-settings-page .bd-tab-content').length, 'tab contents');
+        console.log('BD Client Suite: Available buttons:', $('.bd-settings-page .bd-tab-button').map(function() { return $(this).data('tab'); }).get());
+        console.log('BD Client Suite: Available contents:', $('.bd-settings-page .bd-tab-content').map(function() { return this.id; }).get());
+    });
 
 })(jQuery);

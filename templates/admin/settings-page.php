@@ -35,80 +35,13 @@ $tabs = array(
 );
 ?>
 
-<!-- TEMPORARY DEBUG: Inline styles to test if CSS is loading -->
-<style>
-.bd-settings-page { 
-    background: #f0f0f1 !important; 
-    min-height: 100vh !important; 
-    padding: 20px !important;
-}
-.bd-gradient-text { 
-    color: #667eea !important; 
-    font-size: 2em !important; 
-    font-weight: bold !important;
-    margin-bottom: 10px !important;
-}
-.bd-settings-header { 
-    background: white !important; 
-    padding: 20px !important; 
-    margin: 20px 0 !important; 
-    border-radius: 8px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-}
-.bd-card { 
-    background: white !important; 
-    border-radius: 8px !important; 
-    padding: 20px !important; 
-    margin: 10px 0 !important; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-}
-.bd-tabs { 
-    display: flex !important; 
-    list-style: none !important; 
-    margin: 0 !important; 
-    padding: 0 !important; 
-    background: white !important; 
-    border-radius: 8px !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-}
-.bd-tab-button { 
-    background: #f9f9f9 !important; 
-    border: none !important; 
-    padding: 15px 20px !important; 
-    cursor: pointer !important;
-    border-radius: 8px !important;
-    transition: all 0.3s ease !important;
-}
-.bd-tab-button.active { 
-    background: #667eea !important; 
-    color: white !important;
-}
-.bd-tab-button:hover {
-    background: #e2e8f0 !important;
-}
-.bd-tab-button.active:hover {
-    background: #5a67d8 !important;
-}
-.bd-settings-container {
-    display: flex !important;
-    gap: 20px !important;
-    margin-top: 20px !important;
-}
-.bd-settings-nav {
-    flex: 0 0 250px !important;
-}
-.bd-settings-content {
-    flex: 1 !important;
-}
-</style>
-
-<div class="wrap bd-settings-page">
+<div class="bd-settings-page wrap">
     <div class="bd-settings-header">
         <h1 class="bd-gradient-text">
-            <?php _e('BD Client Suite Settings', 'bd-client-suite'); ?>
+            <?php echo esc_html__('BD Client Suite', 'bd-client-suite'); ?>
         </h1>
         <p class="bd-subtitle">
-            <?php _e('Customize your WordPress admin experience', 'bd-client-suite'); ?>
+            <?php echo esc_html__('Professional WordPress branding and customization for client-friendly admin experiences.', 'bd-client-suite'); ?>
         </p>
     </div>
 

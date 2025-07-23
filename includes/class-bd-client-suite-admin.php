@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/bd-menu-helper.php';
+
 /**
  * BD Client Suite Admin Class
  * 
@@ -42,32 +45,15 @@ class BD_Client_Suite_Admin {
     /**
      * Add admin menu
      */
-
-    }
-
-    if (!$bd_menu_exists) {
-        // Hvis ingen "Buene Data" meny finnes, opprett den
-        add_menu_page(
-            __('Buene Data', 'bd-plugin'), // NB: endre text domain om nødvendig
-            __('Buene Data', 'bd-plugin'),
-            'manage_options',
-            'buene-data', // SLUGGEN MÅ VÆRE IDENTISK I ALLE PLUGINS
-            '', // Ingen callback på hovedmenyen (kan evt. ha en oversiktsside her)
-            'data:image/svg+xml;base64,' . base64_encode('<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L3 7V18H7V14H13V18H17V7L10 2Z" fill="currentColor"/></svg>'),
-            58.5
+    public function add_admin_menu() {
+        // Bruk BD menu helper for konsistent meny-håndtering på tvers av alle BD plugins
+        bd_add_buene_data_menu(
+            __('BD Client Suite', 'bd-client-suite'),
+            'bd-client-suite',
+            array($this, 'render_settings_page'),
+            '🎨'
         );
     }
-
-    // Legg til din plugin som undermeny under Buene Data
-    add_submenu_page(
-        'buene-data',
-        __('BD Client Suite', 'bd-plugin'),
-        __('BD Client Suite', 'bd-plugin'),
-        'manage_options',
-        'bd-client-suite',
-        array($this, 'render_main_page')
-    );
-}
 
     /**
      * Enqueue admin scripts and styles
@@ -79,12 +65,8 @@ class BD_Client_Suite_Admin {
         // Create a debug file to confirm this function is being called
         file_put_contents(BD_CLIENT_SUITE_PATH . 'debug_enqueue.log', date('Y-m-d H:i:s') . " - Hook: $hook\n", FILE_APPEND);
         
-        // Only load on BD Client Suite pages
-        if (strpos($hook, 'bd-client-suite') === false) {
-            error_log('BD Client Suite: Not a BD Client Suite page, skipping CSS/JS enqueue');
-            return;
-        }
-        
+        // Load on all admin pages for now to debug
+        // TODO: Restrict to BD pages only after fixing tabs
         error_log('BD Client Suite: Enqueueing admin assets for hook: ' . $hook);
         
         // Enqueue WordPress media uploader
@@ -119,7 +101,7 @@ class BD_Client_Suite_Admin {
         wp_enqueue_script(
             'bd-client-suite-admin',
             $admin_js_path,
-            array('jquery', 'wp-color-picker', 'media-upload', 'media-views'),
+            array('jquery', 'media-upload', 'media-views'),
             BD_CLIENT_SUITE_VERSION . '.' . time(), // Add timestamp to force cache refresh
             true
         );
@@ -143,7 +125,11 @@ class BD_Client_Suite_Admin {
             )
         ));
         
-        wp_enqueue_style('wp-color-picker');
+        // Enqueue color picker separately and safely
+        if (current_user_can('manage_options')) {
+            wp_enqueue_style('wp-color-picker');
+            wp_enqueue_script('wp-color-picker');
+        }
     }
     
     /**
@@ -154,25 +140,37 @@ class BD_Client_Suite_Admin {
     }
     
     /**
-     * Render main page
-     */
-    public function render_main_page() {
-        // Redirect to settings page as the main interface
-        wp_redirect(admin_url('admin.php?page=bd-client-suite-settings'));
-        exit;
-    }
-    
-    /**
      * Render settings page
      */
     public function render_settings_page() {
+        // Debug: Check if we reach this method
+        error_log('BD Client Suite: render_settings_page called');
+        
         // Set a default tab if not provided, and make sure it is available in the template
         $current_tab = isset($_GET['tab']) && $_GET['tab'] !== '' ? sanitize_text_field($_GET['tab']) : 'branding';
         // Make $current_tab available in the template scope
         if (!isset($current_tab)) {
             $current_tab = 'branding';
         }
-        include BD_CLIENT_SUITE_PATH . 'templates/admin/settings-page.php';
+        
+        // Debug: Check if template file exists
+        $template_path = BD_CLIENT_SUITE_PATH . 'templates/admin/settings-page.php';
+        error_log('BD Client Suite: Template path: ' . $template_path);
+        error_log('BD Client Suite: Template exists: ' . (file_exists($template_path) ? 'YES' : 'NO'));
+        
+        if (!file_exists($template_path)) {
+            echo '<div class="wrap"><h1>BD Client Suite</h1><p>Error: Template file not found at: ' . esc_html($template_path) . '</p></div>';
+            return;
+        }
+        
+        try {
+            // Switch back to main template now that we know JS works
+            include $template_path;
+            // include BD_CLIENT_SUITE_PATH . 'templates/admin/test-settings-page.php';
+        } catch (Exception $e) {
+            echo '<div class="wrap"><h1>BD Client Suite</h1><p>Error loading template: ' . esc_html($e->getMessage()) . '</p></div>';
+            error_log('BD Client Suite: Template error: ' . $e->getMessage());
+        }
     }
     
     /**
@@ -284,7 +282,7 @@ class BD_Client_Suite_Admin {
             echo '<div class="notice notice-success is-dismissible">';
             echo '<p>' . sprintf(
                 __('BD Client Suite activated! <a href="%s">Configure your settings</a> to get started.', 'bd-client-suite'),
-                admin_url('admin.php?page=bd-client-suite-settings')
+                admin_url('admin.php?page=bd-client-suite')
             ) . '</p>';
             echo '</div>';
             delete_transient('bd_client_suite_activated');
@@ -655,23 +653,5 @@ class BD_Client_Suite_Admin {
         wp_send_json_success(array(
             'message' => __('Shortcut deleted successfully.', 'bd-client-suite')
         ));
-    }
-}
-
-require_once __DIR__ . '/bd-menu-helper.php';
-
-class BD_Client_Suite_Admin {
-    public function __construct() {
-        // ... eventuelle andre hooks ...
-        bd_add_buene_data_menu(
-            'BD Client Suite', // Navn på pluginen (det som vises i menyen)
-            'bd-client-suite', // Unik slug for denne pluginen
-            [$this, 'render_main_page'], // Callback for plugin-innholdet
-            '🎨' // Emoji/ikon
-        );
-    }
-    public function render_main_page() {
-        // Alt admin-innholdet ditt for pluginen
-        echo '<div class="wrap"><h1>BD Client Suite</h1>...osv...</div>';
     }
 }

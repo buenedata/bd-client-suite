@@ -180,7 +180,7 @@ class BD_Client_Suite {
                 'version' => BD_CLIENT_SUITE_VERSION,
                 'status' => 'auto',
                 'admin_url' => admin_url('admin.php?page=bd-client-suite'),
-                'settings_url' => admin_url('admin.php?page=bd-client-suite-settings'),
+                'settings_url' => admin_url('admin.php?page=bd-client-suite'),
                 'plugin_file' => BD_CLIENT_SUITE_BASENAME,
                 'docs_url' => 'https://buenedata.no/docs/bd-client-suite/',
                 'support_url' => 'https://buenedata.no/support/'
