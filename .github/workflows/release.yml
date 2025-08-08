@@ -13,6 +13,8 @@ on:
       - 'QUICK-DEBUG-GUIDE.md'
       - 'TESTING-INSTRUCTIONS.md'
       - 'SUCCESS-INSTRUCTIONS.md'
+      - 'test-updater.php'
+      - 'BD-*.txt'
   workflow_dispatch:
 
 permissions:
@@ -96,6 +98,8 @@ jobs:
           --exclude='webpack.config.js' \
           --exclude='gulpfile.js' \
           --exclude='Gruntfile.js' \
+          --exclude='test-updater.php' \
+          --exclude='BD-*.txt' \
           . temp/$REPO_NAME/
         
         cd temp
