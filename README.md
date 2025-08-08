@@ -172,6 +172,20 @@ define('WP_DEBUG_LOG', true);
 
 ## Changelog
 
+### 1.2.0
+- Enhanced shortcuts system with database storage
+- Improved category management
+- Better role-based functionality
+- Updated admin interface
+- Performance optimizations
+- Bug fixes and stability improvements
+
+### 1.1.0
+- Added advanced customization options
+- Improved login redirect system
+- Enhanced branding features
+- Better BD plugin integration
+
 ### 1.0.0
 - Initial release
 - Complete branding system
