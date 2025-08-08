@@ -1,37 +1,108 @@
 /**
  * BD Client Suite Admin Styles
- * 
+ * Following BD Plugin Design Guide v3.0
+ *
  * @package BD_Client_Suite
  * @since 1.0.0
  */
 
 /* ==========================================================================
-   Settings Page Layout
+   BD Design Guide v3.0 - Modern Layout Structure
    ========================================================================== */
 
+.bd-client-suite-admin {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    margin: 0 -20px;
+    padding: 30px;
+    min-height: 100vh;
+}
+
+/* Modern Header Section */
+.bd-admin-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    padding: 50px 60px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08), 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.bd-admin-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Gradient Text Headers */
+.bd-branding h2 {
+    margin: 0 0 15px 0;
+    color: #1a202c;
+    font-size: 2.4em;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+}
+
+.bd-branding p {
+    color: #374151;
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Legacy support for existing settings page */
 .bd-settings-page {
-    background: #f0f0f1;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     min-height: 100vh;
     margin: -20px -20px -12px -2px;
-    padding: 20px;
+    padding: 30px;
 }
 
 .bd-settings-header {
-    background: white;
-    padding: 30px;
-    margin-bottom: 30px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    padding: 50px 60px;
+    margin-bottom: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08), 0 2px 10px rgba(0,0,0,0.04);
+    border: 1px solid rgba(255,255,255,0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.bd-settings-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
 }
 
 .bd-settings-header h1 {
-    margin: 0 0 10px 0;
-    font-size: 2.5em;
+    margin: 0 0 15px 0;
+    font-size: 2.4em;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
 }
 
 .bd-subtitle {
-    color: #6b7280;
+    color: #374151;
     font-size: 16px;
     margin: 0;
     line-height: 1.5;
@@ -100,6 +171,7 @@
 .bd-tab-button.active {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .bd-tab-icon {
@@ -194,6 +266,134 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: 700;
+}
+
+/* Modern Navigation Tabs */
+.nav-tab-wrapper {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 12px 12px 0 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.nav-tab {
+    background: transparent;
+    border: none;
+    border-radius: 12px 12px 0 0;
+    color: #64748b;
+    font-weight: 600;
+    padding: 18px 28px;
+    margin: 0;
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.nav-tab:hover {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    color: #334155;
+    transform: translateY(-1px);
+}
+
+.nav-tab-active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: none;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    padding: 40px;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08), 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 30px;
+    border: 1px solid rgba(255,255,255,0.8);
+    border-top: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeInUp 0.4s ease;
+}
+
+/* Settings Sections */
+.bd-settings-section {
+    margin-bottom: 50px;
+    padding: 35px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.bd-settings-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.bd-settings-section h3 {
+    margin: 0 0 25px 0;
+    color: #1a202c;
+    font-size: 1.5em;
+    font-weight: 700;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+    position: relative;
+}
+
+.bd-settings-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Settings Footer */
+.bd-settings-footer {
+    padding: 20px 30px;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 12px 12px;
+}
+
+.bd-settings-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.bd-status-message {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .bd-card {

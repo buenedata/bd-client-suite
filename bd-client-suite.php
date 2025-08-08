@@ -6,16 +6,17 @@
  * the WordPress admin experience for a polished, client-friendly environment.
  *
  * @package BD_Client_Suite
- * @version 1.0.1
+ * @version 1.1.0
  */
 
 /*
 Plugin Name: BD Client Suite
-Plugin URI: https://buenedata.no/bd-client-suite/
+Plugin URI: https://github.com/buenedata/bd-client-suite
 Description: Professional WordPress branding and customization plugin that transforms the admin experience. Create custom login pages, admin shortcuts, smart redirections, and client-friendly interfaces.
-Version: 1.0.1
+Version: 1.1.0
 Author: Buene Data
 Author URI: https://buenedata.no/
+Update URI: https://github.com/buenedata/bd-client-suite
 Text Domain: bd-client-suite
 Domain Path: /languages
 Requires at least: 5.0
@@ -32,7 +33,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('BD_CLIENT_SUITE_VERSION', '1.0.1');
+define('BD_CLIENT_SUITE_VERSION', '1.1.0');
 define('BD_CLIENT_SUITE_FILE', __FILE__);
 define('BD_CLIENT_SUITE_PATH', plugin_dir_path(__FILE__));
 define('BD_CLIENT_SUITE_URL', plugin_dir_url(__FILE__));
@@ -61,6 +62,15 @@ require_once BD_CLIENT_SUITE_PATH . 'includes/class-bd-client-suite-branding.php
 require_once BD_CLIENT_SUITE_PATH . 'includes/class-bd-client-suite-shortcuts.php';
 require_once BD_CLIENT_SUITE_PATH . 'includes/class-bd-client-suite-login.php';
 require_once BD_CLIENT_SUITE_PATH . 'includes/class-bd-client-suite-redirects.php';
+
+// Initialize updater
+if (is_admin()) {
+    require_once BD_CLIENT_SUITE_PATH . 'includes/class-bd-updater.php';
+    new BD_Plugin_Updater(BD_CLIENT_SUITE_FILE, 'buenedata', 'bd-client-suite');
+}
+
+// Load menu helper
+require_once BD_CLIENT_SUITE_PATH . 'includes/bd-menu-helper.php';
 
 /**
  * Main plugin class
